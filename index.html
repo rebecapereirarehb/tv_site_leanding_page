@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS Vision AI — Neo QLED Ultra 4K</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #020305;
+    --dark: #090c12;
+    --panel: #0d1117;
+    --border: rgba(255,255,255,0.06);
+    --accent: #00d4ff;
+    --accent2: #7b2fff;
+    --gold: #c9a84c;
+    --text: #e8eaf0;
+    --muted: rgba(232,234,240,0.45);
+    --price: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(0,212,255,0.4);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), width 0.3s, height 0.3s, border-color 0.3s;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: linear-gradient(to bottom, rgba(2,3,5,0.95), transparent);
+    backdrop-filter: blur(0px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 0.18em;
+    color: white;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--black);
+    background: var(--accent);
+    border: none;
+    padding: 0.6rem 1.4rem;
+    cursor: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { background: white; transform: scale(1.04); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(0,80,160,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 70% 30%, rgba(123,47,255,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 20% 70%, rgba(0,212,255,0.06) 0%, transparent 60%);
+  }
+
+  /* Animated grid */
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+  }
+
+  .hero-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 0.4rem 1.2rem;
+    margin-bottom: 2rem;
+    animation: fadeSlideDown 0.8s ease both;
+    position: relative; z-index: 2;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 11rem);
+    line-height: 0.9;
+    text-align: center;
+    letter-spacing: 0.02em;
+    position: relative; z-index: 2;
+    animation: fadeSlideDown 0.8s 0.1s ease both;
+  }
+  .hero-title .line1 { display: block; color: white; }
+  .hero-title .line2 {
+    display: block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-title .line3 { display: block; color: rgba(255,255,255,0.15); font-size: 0.45em; letter-spacing: 0.25em; }
+
+  .hero-sub {
+    max-width: 500px;
+    text-align: center;
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 2rem 0 3rem;
+    position: relative; z-index: 2;
+    animation: fadeSlideDown 0.8s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1.2rem; align-items: center;
+    position: relative; z-index: 2;
+    animation: fadeSlideDown 0.8s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    padding: 1rem 2.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.25s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  }
+  .btn-primary:hover { background: white; transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 1rem 2.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* TV showcase */
+  .tv-showcase {
+    width: min(900px, 90vw);
+    margin: 4rem auto -2rem;
+    position: relative; z-index: 2;
+    animation: fadeSlideUp 1s 0.4s ease both;
+  }
+
+  .tv-frame {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--dark);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(0,212,255,0.15),
+      0 40px 120px rgba(0,212,255,0.12),
+      0 80px 200px rgba(0,0,0,0.8);
+  }
+
+  .tv-screen {
+    width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse 70% 60% at 30% 50%, rgba(0,40,120,0.8), transparent 60%),
+      radial-gradient(ellipse 60% 70% at 80% 30%, rgba(80,0,180,0.6), transparent 60%),
+      radial-gradient(ellipse 50% 50% at 60% 80%, rgba(0,100,200,0.4), transparent 60%),
+      linear-gradient(135deg, #030820, #06091a, #0a0520);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  /* Nebula animation */
+  .nebula {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 40% 40% at 25% 40%, rgba(0,180,255,0.25), transparent),
+      radial-gradient(ellipse 30% 50% at 75% 60%, rgba(130,50,255,0.2), transparent),
+      radial-gradient(ellipse 60% 30% at 50% 80%, rgba(0,80,200,0.15), transparent);
+    animation: nebulaPulse 8s ease-in-out infinite alternate;
+  }
+  @keyframes nebulaPulse {
+    0% { opacity: 0.7; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .stars {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px),
+      radial-gradient(circle, rgba(200,220,255,0.6) 1px, transparent 1px);
+    background-size: 200px 200px, 130px 130px, 90px 90px;
+    background-position: 0 0, 60px 40px, 20px 100px;
+    animation: starsTwinkle 6s ease-in-out infinite alternate;
+  }
+  @keyframes starsTwinkle { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+  .screen-text {
+    position: relative; z-index: 2;
+    text-align: center;
+  }
+  .screen-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 3.5rem);
+    letter-spacing: 0.4em;
+    color: rgba(255,255,255,0.9);
+    text-shadow: 0 0 60px rgba(0,212,255,0.8), 0 0 120px rgba(0,212,255,0.4);
+  }
+  .screen-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(0.4rem, 1.2vw, 0.75rem);
+    letter-spacing: 0.3em;
+    color: rgba(0,212,255,0.8);
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+
+  /* Scan line effect */
+  .scanlines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+    );
+    animation: scanMove 8s linear infinite;
+    opacity: 0.4;
+  }
+  @keyframes scanMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100px; }
+  }
+
+  /* Corner accents */
+  .corner { position: absolute; width: 20px; height: 20px; }
+  .corner.tl { top: 12px; left: 12px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+  .corner.tr { top: 12px; right: 12px; border-top: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+  .corner.bl { bottom: 12px; left: 12px; border-bottom: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+  .corner.br { bottom: 12px; right: 12px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+
+  .tv-stand {
+    width: 30%; height: 24px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+    margin: 0 auto;
+    border-radius: 0 0 4px 4px;
+  }
+  .tv-base {
+    width: 55%; height: 6px;
+    background: rgba(255,255,255,0.06);
+    margin: 0 auto;
+    border-radius: 3px;
+  }
+
+  /* SPECS STRIP */
+  .specs-strip {
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    overflow: hidden;
+  }
+  .spec-item {
+    flex: 1;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  .spec-item:last-child { border-right: none; }
+  .spec-item:hover { background: rgba(0,212,255,0.04); }
+  .spec-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    display: block;
+  }
+  .spec-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* FEATURES SECTION */
+  .section { padding: 8rem 3rem; max-width: 1200px; margin: 0 auto; }
+
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 5rem;
+  }
+
+  .feature-card {
+    background: var(--dark);
+    padding: 2.5rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .feature-card:hover { background: rgba(0,212,255,0.03); }
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 44px; height: 44px;
+    border: 1px solid rgba(0,212,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+  }
+  .feature-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 0.8rem;
+  }
+  .feature-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .feature-number {
+    position: absolute;
+    bottom: 1.5rem; right: 1.8rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* TECHNOLOGY SECTION */
+  .tech-section {
+    padding: 8rem 3rem;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .tech-inner { max-width: 1200px; margin: 0 auto; }
+
+  .tech-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .processor-visual {
+    aspect-ratio: 1;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .proc-rings {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .proc-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    animation: procSpin linear infinite;
+  }
+  .proc-ring:nth-child(1) { width: 90%; height: 90%; border-color: rgba(0,212,255,0.1); animation-duration: 40s; }
+  .proc-ring:nth-child(2) { width: 70%; height: 70%; border-color: rgba(0,212,255,0.15); animation-duration: 25s; animation-direction: reverse; }
+  .proc-ring:nth-child(3) { width: 50%; height: 50%; border-color: rgba(123,47,255,0.2); animation-duration: 15s; }
+  @keyframes procSpin { to { transform: rotate(360deg); } }
+
+  .proc-core {
+    width: 180px; height: 180px;
+    background: linear-gradient(135deg, var(--dark), rgba(0,30,80,0.8));
+    border: 1px solid rgba(0,212,255,0.2);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; z-index: 2;
+    box-shadow: 0 0 60px rgba(0,212,255,0.1), inset 0 0 40px rgba(0,0,0,0.5);
+  }
+  .proc-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .proc-gen {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    line-height: 1;
+    color: white;
+    margin: 0.2rem 0;
+  }
+  .proc-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.5rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+  }
+
+  .proc-dots {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+  }
+  .proc-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    position: absolute;
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+  @keyframes dotPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  .tech-list { list-style: none; }
+  .tech-list li {
+    display: flex; align-items: flex-start;
+    gap: 1rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tech-list li:first-child { border-top: 1px solid var(--border); }
+  .tech-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    min-width: 28px;
+    margin-top: 0.15rem;
+  }
+  .tech-info-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 0.3rem;
+  }
+  .tech-info-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* PRICING */
+  .pricing-section {
+    padding: 8rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .price-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    position: relative;
+  }
+  .price-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(123,47,255,0.05));
+    pointer-events: none;
+  }
+
+  .price-left {
+    padding: 4rem;
+    border-right: 1px solid var(--border);
+    position: relative; z-index: 1;
+  }
+  .price-tv-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .price-model {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+  .price-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 360px;
+  }
+
+  .price-tag {
+    margin-bottom: 2rem;
+  }
+  .price-from {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    color: white;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .price-installments {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+  .price-installments strong { color: var(--accent); }
+
+  .price-buttons { display: flex; flex-direction: column; gap: 0.8rem; }
+  .price-right {
+    padding: 4rem;
+    position: relative; z-index: 1;
+  }
+
+  .includes-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+  .include-item {
+    display: flex; align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .include-check {
+    width: 20px; height: 20px;
+    border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.6rem;
+    color: var(--accent);
+  }
+  .include-text { font-size: 0.88rem; color: var(--text); }
+  .include-detail { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+
+  /* SOUNDBAR ADDON */
+  .addon-banner {
+    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(123,47,255,0.06));
+    border: 1px solid rgba(0,212,255,0.15);
+    padding: 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 1px;
+  }
+  .addon-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .addon-name { font-size: 1rem; font-weight: 500; color: white; }
+  .addon-price { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); }
+
+  /* GAMING SECTION */
+  .gaming-section {
+    padding: 8rem 3rem;
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .gaming-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 100% 50%, rgba(123,47,255,0.1), transparent),
+      radial-gradient(ellipse 40% 60% at 0% 50%, rgba(0,212,255,0.06), transparent);
+    pointer-events: none;
+  }
+  .gaming-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+  .gaming-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+  .gaming-card {
+    background: var(--dark);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .gaming-card-accent {
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,47,255,0.15), transparent);
+  }
+  .gaming-stat {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--accent2);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .gaming-stat-unit { font-size: 0.45em; color: var(--muted); vertical-align: super; }
+  .gaming-card-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 0.6rem;
+  }
+  .gaming-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* FOOTER */
+  footer {
+    padding: 4rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-logo span { color: rgba(0,212,255,0.4); }
+  .footer-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+  }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Reveal animations */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* HORIZONTAL TICKER */
+  .ticker-wrap {
+    overflow: hidden;
+    background: rgba(0,212,255,0.06);
+    border-top: 1px solid rgba(0,212,255,0.1);
+    border-bottom: 1px solid rgba(0,212,255,0.1);
+    padding: 0.8rem 0;
+  }
+  .ticker-track {
+    display: flex; gap: 3rem;
+    animation: tickerMove 30s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  @keyframes tickerMove { to { transform: translateX(-50%); } }
+  .ticker-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(0,212,255,0.6);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .section, .pricing-section, .gaming-section { padding: 5rem 1.5rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .tech-split { grid-template-columns: 1fr; }
+    .price-card { grid-template-columns: 1fr; }
+    .price-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .gaming-grid { grid-template-columns: 1fr; }
+    .addon-banner { flex-direction: column; padding: 2rem; }
+    .specs-strip { flex-wrap: wrap; }
+    .spec-item { min-width: 50%; }
+    footer { flex-direction: column; }
+    .hero-actions { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NEX<span>U</span>S</div>
+  <ul class="nav-links">
+    <li><a href="#features">Recursos</a></li>
+    <li><a href="#tech">Tecnologia</a></li>
+    <li><a href="#gaming">Gaming</a></li>
+    <li><a href="#preco">Preço</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('preco').scrollIntoView({behavior:'smooth'})">Comprar Agora</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <span class="hero-badge">▸ Samsung Vision AI · Neo QLED Ultra 4K · 55"</span>
+
+  <h1 class="hero-title">
+    <span class="line3">o futuro chegou na sua sala</span>
+    <span class="line1">NEO QLED</span>
+    <span class="line2">ULTRA 4K</span>
+  </h1>
+
+  <p class="hero-sub">
+    Inteligência artificial que entende você. Imagem que transforma qualquer conteúdo em até 4K. Som que envolve cada cena. Uma TV que conversa, aprende e evolui.
+  </p>
+
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('preco').scrollIntoView({behavior:'smooth'})">Garantir o Meu</button>
+    <button class="btn-secondary" onclick="document.getElementById('tech').scrollIntoView({behavior:'smooth'})">Ver Tecnologia</button>
+  </div>
+
+  <div class="tv-showcase">
+    <div class="tv-frame">
+      <div class="tv-screen">
+        <div class="nebula"></div>
+        <div class="stars"></div>
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+        <div class="screen-text">
+          <div class="screen-brand">VISION AI</div>
+          <div class="screen-sub">Neo QLED Ultra 4K · Processador NQ4 AI Gen 2</div>
+        </div>
+        <div class="scanlines"></div>
+      </div>
+    </div>
+    <div class="tv-stand"></div>
+    <div class="tv-base"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot"></span>Processador NQ4 AI Gen 2</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>20 Redes Neurais</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Quantum Mini LED</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>144Hz · HDMI 2.1</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Vision AI Companion</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Pantone Certified</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>FreeSync Premium</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Gaming Hub</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>7 Anos de Atualizações</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Processador NQ4 AI Gen 2</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>20 Redes Neurais</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Quantum Mini LED</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>144Hz · HDMI 2.1</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Vision AI Companion</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Pantone Certified</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>FreeSync Premium</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Gaming Hub</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>7 Anos de Atualizações</span>
+  </div>
+</div>
+
+<!-- SPECS STRIP -->
+<div class="specs-strip">
+  <div class="spec-item">
+    <span class="spec-value">55"</span>
+    <span class="spec-label">Tela Neo QLED</span>
+  </div>
+  <div class="spec-item">
+    <span class="spec-value">4K</span>
+    <span class="spec-label">Ultra HD 3840×2160</span>
+  </div>
+  <div class="spec-item">
+    <span class="spec-value">144</span>
+    <span class="spec-label">Hz Taxa de Atualização</span>
+  </div>
+  <div class="spec-item">
+    <span class="spec-value">4×</span>
+    <span class="spec-label">HDMI 2.1</span>
+  </div>
+  <div class="spec-item">
+    <span class="spec-value">20</span>
+    <span class="spec-label">Redes Neurais AI</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="reveal">
+    <span class="section-tag">▸ 01 — Inteligência Artificial</span>
+    <h2 class="section-title">Uma TV que<br><span style="color:var(--accent)">entende você.</span></h2>
+    <p style="color:var(--muted);max-width:500px;line-height:1.8;font-size:0.95rem;">
+      O Vision AI vai além de uma simples tela. Com tecnologia generativa e conversacional, ela dialoga, personaliza e transforma cada momento em experiência.
+    </p>
+  </div>
+
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-title">Vision AI Companion</div>
+      <p class="feature-desc">Pergunte e sua TV responde. IA generativa conversacional que compreende o contexto do que está na tela. Sem menus, apenas voz.</p>
+      <div class="feature-number">01</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎙️</div>
+      <div class="feature-title">Alexa & Bixby Integradas</div>
+      <p class="feature-desc">Controle total por voz. Saiba quem são os atores, os ingredientes da receita no canal, troque de canal — tudo sem tocar no controle.</p>
+      <div class="feature-number">02</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🖼️</div>
+      <div class="feature-title">Papel de Parede por AI</div>
+      <p class="feature-desc">A AI gera imagens personalizadas baseadas no seu humor e interesses, transformando sua TV em uma obra de arte viva.</p>
+      <div class="feature-number">03</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎨</div>
+      <div class="feature-title">Color Booster Pro</div>
+      <p class="feature-desc">Reconhecimento cena a cena com aprimoramento de cores em tempo real. Cada frame mais vívido e dinâmico que o anterior.</p>
+      <div class="feature-number">04</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔊</div>
+      <div class="feature-title">Som Adaptativo Plus</div>
+      <p class="feature-desc">O som analisa o ambiente, o tipo de conteúdo e se ajusta automaticamente. Diálogos nítidos, trilhas imersivas.</p>
+      <div class="feature-number">05</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🐾</div>
+      <div class="feature-title">Pet Care</div>
+      <p class="feature-desc">Sua TV detecta latidos pelo microfone e ativa automaticamente o conteúdo favorito do seu pet para acalmá-lo quando você sai.</p>
+      <div class="feature-number">06</div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<div class="tech-section" id="tech">
+  <div class="tech-inner">
+    <div class="reveal">
+      <span class="section-tag">▸ 02 — Processamento</span>
+      <h2 class="section-title">O cérebro por<br>trás da <span style="color:var(--accent)">imagem.</span></h2>
+    </div>
+
+    <div class="tech-split reveal">
+      <div class="processor-visual">
+        <div class="proc-rings">
+          <div class="proc-ring"></div>
+          <div class="proc-ring"></div>
+          <div class="proc-ring"></div>
+        </div>
+        <div class="proc-core">
+          <span class="proc-name">Samsung</span>
+          <span class="proc-gen">NQ4</span>
+          <span class="proc-sub">AI GEN 2 · 2025</span>
+        </div>
+      </div>
+
+      <ul class="tech-list">
+        <li>
+          <span class="tech-number">01</span>
+          <div>
+            <div class="tech-info-title">20 Redes Neurais</div>
+            <div class="tech-info-desc">Análise simultânea de brilho, cor e textura a cada quadro. O processador aprende com milhares de referências de imagens reais.</div>
+          </div>
+        </li>
+        <li>
+          <span class="tech-number">02</span>
+          <div>
+            <div class="tech-info-title">Upscaling para até 4K</div>
+            <div class="tech-info-desc">Qualquer conteúdo — de SD a Full HD — é elevado à experiência 4K com mais brilho, clareza e detalhe em tempo real.</div>
+          </div>
+        </li>
+        <li>
+          <span class="tech-number">03</span>
+          <div>
+            <div class="tech-info-title">Quantum Mini LED</div>
+            <div class="tech-info-desc">LEDs minúsculos em zonas concentradas entregam contraste refinado com precisão cirúrgica. Pretos profundos, brancos brilhantes.</div>
+          </div>
+        </li>
+        <li>
+          <span class="tech-number">04</span>
+          <div>
+            <div class="tech-info-title">Neo Quantum HDR</div>
+            <div class="tech-info-desc">HDR10+ Adaptativo com mapeamento de tons dinâmico por cena. Cores precisas e detalhes que antes ficavam na sombra.</div>
+          </div>
+        </li>
+        <li>
+          <span class="tech-number">05</span>
+          <div>
+            <div class="tech-info-title">Certificação Pantone</div>
+            <div class="tech-info-desc">Primeira TV certificada pela PANTONE — referência mundial em precisão de cor. O que você vê é o que o criador pretendia.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- GAMING -->
+<section class="gaming-section" id="gaming">
+  <div class="gaming-bg"></div>
+  <div class="gaming-inner">
+    <div class="reveal">
+      <span class="section-tag">▸ 03 — Gaming</span>
+      <h2 class="section-title">Performance<br>sem <span style="color:var(--accent2)">compromisso.</span></h2>
+      <p style="color:var(--muted);max-width:480px;line-height:1.8;font-size:0.95rem;margin-top:1rem;">
+        Quatro portas HDMI 2.1. Taxa de 144Hz. IA que reconhece o gênero do jogo e configura tudo automaticamente. O PlayStation e o Xbox merecem uma tela à altura.
+      </p>
+    </div>
+
+    <div class="gaming-grid reveal">
+      <div class="gaming-card">
+        <div class="gaming-card-accent"></div>
+        <div class="gaming-stat">144<span class="gaming-stat-unit">Hz</span></div>
+        <div class="gaming-card-title">Motion Xcelerator 144Hz</div>
+        <p class="gaming-card-desc">Imagens ultra fluidas com baixo tempo de resposta. Cada movimento fiel ao que você vê, sem blur, sem tearing.</p>
+      </div>
+      <div class="gaming-card">
+        <div class="gaming-card-accent"></div>
+        <div class="gaming-stat">4×</div>
+        <div class="gaming-card-title">HDMI 2.1 completo</div>
+        <p class="gaming-card-desc">Todas as quatro portas são HDMI 2.1 com suporte a 4K@144Hz. Conecte console, PC e soundbar sem abrir mão de qualidade.</p>
+      </div>
+      <div class="gaming-card">
+        <div class="gaming-card-accent" style="background:radial-gradient(circle,rgba(0,212,255,0.12),transparent)"></div>
+        <div class="gaming-stat" style="color:var(--accent)">AI</div>
+        <div class="gaming-card-title">Modo Game com AI</div>
+        <p class="gaming-card-desc">A TV reconhece o gênero do jogo automaticamente — RPG, FPS, esportes — e aplica as configurações ideais de imagem e som.</p>
+      </div>
+      <div class="gaming-card">
+        <div class="gaming-card-accent" style="background:radial-gradient(circle,rgba(0,212,255,0.1),transparent)"></div>
+        <div class="gaming-stat" style="color:var(--accent); font-size:2.8rem;">FREE<br>SYNC</div>
+        <div class="gaming-card-title">AMD FreeSync Premium</div>
+        <p class="gaming-card-desc">Zero screen tearing, zero stuttering. Jogabilidade HDR fluida com baixa latência. Tecnologia que jogadores profissionais exigem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="preco">
+  <div class="reveal">
+    <span class="section-tag">▸ 04 — Oferta</span>
+    <h2 class="section-title">Leve para casa<br><span style="color:var(--accent)">o futuro.</span></h2>
+  </div>
+
+  <div class="price-card reveal" style="margin-top:3rem;">
+    <div class="price-left">
+      <div class="price-tv-name">▸ Combo Exclusivo</div>
+      <div class="price-model">Neo QLED<br>Ultra 4K 55"</div>
+      <p class="price-desc">
+        TV Neo QLED 55" QN1EF + Soundbar HW-B450F. O pacote completo de som e imagem para transformar sua sala de estar.
+      </p>
+
+      <div class="price-tag">
+        <span class="price-from">A partir de</span>
+        <div class="price-amount">R$7.999</div>
+        <div class="price-installments">
+          ou <strong>10× de R$799,90</strong> sem juros no cartão
+        </div>
+      </div>
+
+      <div class="price-buttons">
+        <button class="btn-primary" style="text-align:center;">Comprar Agora</button>
+        <button class="btn-secondary" style="text-align:center;">Simular Parcelas</button>
+      </div>
+    </div>
+
+    <div class="price-right">
+      <div class="includes-title">▸ O que está incluído</div>
+
+      <div class="include-item">
+        <div class="include-check">✓</div>
+        <div>
+          <div class="include-text">TV Neo QLED 55" QN1EF</div>
+          <div class="include-detail">4K Ultra HD · 144Hz · Vision AI</div>
+        </div>
+      </div>
+      <div class="include-item">
+        <div class="include-check">✓</div>
+        <div>
+          <div class="include-text">Soundbar HW-B450F</div>
+          <div class="include-detail">Q-Symphony · Som Surround</div>
+        </div>
+      </div>
+      <div class="include-item">
+        <div class="include-check">✓</div>
+        <div>
+          <div class="include-text">Controle SolarCell</div>
+          <div class="include-detail">Sem pilhas · Recarregável por luz</div>
+        </div>
+      </div>
+      <div class="include-item">
+        <div class="include-check">✓</div>
+        <div>
+          <div class="include-text">Garantia Samsung 1 Ano</div>
+          <div class="include-detail">Suporte técnico especializado</div>
+        </div>
+      </div>
+      <div class="include-item">
+        <div class="include-check">✓</div>
+        <div>
+          <div class="include-text">7 Anos de Atualizações OS</div>
+          <div class="include-detail">One UI Tizen · Sempre atualizado</div>
+        </div>
+      </div>
+      <div class="include-item">
+        <div class="include-check">✓</div>
+        <div>
+          <div class="include-text">Frete Grátis</div>
+          <div class="include-detail">Regiões selecionadas · Instalação gratuita</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="addon-banner reveal">
+    <div>
+      <div class="addon-label">★ Exclusivo do Kit</div>
+      <div class="addon-name">Soundbar HW-B450F incluída no combo — economize R$1.200</div>
+    </div>
+    <div class="addon-price">−R$1.200</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NEX<span>U</span>S</div>
+  <div class="footer-text">
+    Landing page demonstrativa · Neo QLED Ultra 4K QN1EF<br>
+    © 2026 · Todos os direitos reservados
+  </div>
+  <div class="footer-links">
+    <a href="#">Política de Privacidade</a>
+    <a href="#">Termos de Uso</a>
+    <a href="#">Contato</a>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 5 + 'px';
+    cursor.style.top = my - 5 + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx - 18 + 'px';
+    ring.style.top = ry - 18 + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('button, a, .feature-card, .gaming-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      ring.style.width = '60px'; ring.style.height = '60px';
+      ring.style.borderColor = 'rgba(0,212,255,0.6)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.borderColor = 'rgba(0,212,255,0.4)';
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Stagger children
+        const children = e.target.querySelectorAll('.feature-card, .gaming-card, .tech-list li, .include-item');
+        children.forEach((child, i) => {
+          child.style.transitionDelay = i * 0.08 + 's';
+          child.classList.add('reveal');
+          setTimeout(() => child.classList.add('visible'), 50);
+        });
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
